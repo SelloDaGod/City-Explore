@@ -7,8 +7,9 @@ import axios from 'axios';
 import { useState } from 'react';
 function App() {
   let enteredText = ""
-  const [displaystring, setdisplaystring] = useState("")
-  const [cityData, setcityData] = useState({})
+  const [displaystring, setdisplaystring] = useState("");
+  const [cityData, setcityData] = useState({});
+  const [Error, setError] = useState("");
 
   let imgeurl = `https://maps.locationiq.com/v3/staticmap?key=Pk.2d58b10b20f70a2b5002be8c85d5bdce&center=${cityData.lat},${cityData.lon}&zoom=12
   `
@@ -33,10 +34,12 @@ function App() {
             console.log(cityData)
             setdisplaystring(cityData.display_name + cityData.lat + cityData.lon)
             setcityData(cityData)
-
+          }).catch(function(error){
+            console.log(error.message)
+            setError(error.message)
           })
         }}>Submit</Button>
-
+        {Error}
         <h1>{displaystring}</h1>
         <Card style={{ width: '18rem' }}><Card.Img src={imgeurl}/> </Card>
         
