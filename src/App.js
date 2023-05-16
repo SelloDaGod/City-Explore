@@ -1,12 +1,17 @@
-import logo from './logo.svg';
+
 import './App.css';
 import Form from 'react-bootstrap/Form';
 import { Button } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import axios from 'axios';
 import { useState } from 'react';
 function App() {
   let enteredText = ""
-  const [displaystring, setdisplaystring ] = useState("")
+  const [displaystring, setdisplaystring] = useState("")
+  const [cityData, setcityData] = useState({})
+
+  let imgeurl = `https://maps.locationiq.com/v3/staticmap?key=Pk.2d58b10b20f70a2b5002be8c85d5bdce&center=${cityData.lat},${cityData.lon}&zoom=12
+  `
   return (
     <div className="App">
       <header className="App-header">
@@ -27,25 +32,18 @@ function App() {
             let cityData = res.data[0]
             console.log(cityData)
             setdisplaystring(cityData.display_name + cityData.lat + cityData.lon)
-
+            setcityData(cityData)
 
           })
         }}>Submit</Button>
 
         <h1>{displaystring}</h1>
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          cityRes
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <Card style={{ width: '18rem' }}><Card.Img src={imgeurl}/> </Card>
+        
+      
+          
+      
+  
       </header>
     </div>
   );
