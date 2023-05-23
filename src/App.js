@@ -1,4 +1,4 @@
-
+import Weather from "./weather"
 import './App.css';
 import Form from 'react-bootstrap/Form';
 import { Button } from 'react-bootstrap';
@@ -10,9 +10,17 @@ function App() {
   const [displaystring, setdisplaystring] = useState("");
   const [cityData, setcityData] = useState({});
   const [Error, setError] = useState("");
-
-  let imgeurl = `https://maps.locationiq.com/v3/staticmap?key=Pk.2d58b10b20f70a2b5002be8c85d5bdce&center=${cityData.lat},${cityData.lon}&zoom=12
-  `
+  const [weatherData, setweatherData] = useState([]);
+  let imgeurl = `https://maps.locationiq.com/v3/staticmap?key=Pk.2d58b10b20f70a2b5002be8c85d5bdce&center=${cityData.lat},${cityData.lon}&zoom=12`
+  function weather() {
+    let response = axios.get(`http://localhost:3001/weather?lat=${cityData.lat}&lon=${cityData.lon}&searchQuery=${enteredText}`)
+    response.then(function (res) {
+      let weatherData = res.data
+      setweatherData(res.data)
+      console.log(res)
+    })
+    console.log(response)
+  }
   return (
     <div className="App">
       <header className="App-header">
@@ -34,19 +42,20 @@ function App() {
             console.log(cityData)
             setdisplaystring(cityData.display_name + cityData.lat + cityData.lon)
             setcityData(cityData)
-          }).catch(function(error){
+            weather()
+          }).catch(function (error) {
             console.log(error.message)
             setError(error.message)
           })
         }}>Submit</Button>
         {Error}
         <h1>{displaystring}</h1>
-        <Card style={{ width: '18rem' }}><Card.Img src={imgeurl}/> </Card>
-        
-      
-          
-      
-  
+        <Card style={{ width: '18rem' }}><Card.Img src={imgeurl} /> </Card>
+
+<Weather weatherData={weatherData}/>
+
+
+
       </header>
     </div>
   );
