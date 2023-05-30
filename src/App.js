@@ -5,21 +5,36 @@ import { Button } from 'react-bootstrap';
 import { Card } from 'react-bootstrap';
 import axios from 'axios';
 import { useState } from 'react';
+import Movie from "./Movie";
 function App() {
   let enteredText = ""
   const [displaystring, setdisplaystring] = useState("");
   const [cityData, setcityData] = useState({});
   const [Error, setError] = useState("");
   const [weatherData, setweatherData] = useState([]);
+  const [movies, setMovies] = useState([])
+
+
   let imgeurl = `https://maps.locationiq.com/v3/staticmap?key=Pk.2d58b10b20f70a2b5002be8c85d5bdce&center=${cityData.lat},${cityData.lon}&zoom=12`
   function weather() {
-    let response = axios.get(`http://localhost:3001/weather?lat=${cityData.lat}&lon=${cityData.lon}&searchQuery=${enteredText}`)
+    let response = axios.get(`${process.env.REACT_APP_CITYEXPLORERAPI}/weather?lat=${cityData.lat}&lon=${cityData.lon}&searchQuery=${enteredText}`)
     response.then(function (res) {
       let weatherData = res.data
       setweatherData(res.data)
       console.log(res)
+    }).catch(function (error) {
+      console.log(error.message)
+      setError(error.message)
     })
     console.log(response)
+    let moviesResponse = axios.get(`${process.env.REACT_APP_CITYEXPLORERAPI}/movies?movie=Memphis`)
+    moviesResponse.then(function (res) {
+      console.log(res.data)
+      setMovies(res.data)
+    }).catch(function (error) {
+      console.log(error.message)
+      setError(error.message)
+    })
   }
   return (
     <div className="App">
@@ -42,19 +57,20 @@ function App() {
             console.log(cityData)
             setdisplaystring(cityData.display_name + cityData.lat + cityData.lon)
             setcityData(cityData)
-            weather()
           }).catch(function (error) {
             console.log(error.message)
             setError(error.message)
           })
+          weather()
+
         }}>Submit</Button>
         {Error}
         <h1>{displaystring}</h1>
         <Card style={{ width: '18rem' }}><Card.Img src={imgeurl} /> </Card>
 
-<Weather weatherData={weatherData}/>
+        <Weather weatherData={weatherData} />
 
-
+        <Movie movies={movies} />
 
       </header>
     </div>
