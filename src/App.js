@@ -5,7 +5,7 @@ import { Button } from 'react-bootstrap';
 import { Card } from 'react-bootstrap';
 import axios from 'axios';
 import { useState } from 'react';
-import Movie from "./Movie";
+import Movies from "./Movies";
 function App() {
   let enteredText = ""
   const [displaystring, setdisplaystring] = useState("");
@@ -19,7 +19,6 @@ function App() {
   function weather() {
     let response = axios.get(`${process.env.REACT_APP_CITYEXPLORERAPI}/weather?lat=${cityData.lat}&lon=${cityData.lon}&searchQuery=${enteredText}`)
     response.then(function (res) {
-      let weatherData = res.data
       setweatherData(res.data)
       console.log(res)
     }).catch(function (error) {
@@ -70,7 +69,7 @@ function App() {
 
         <Weather weatherData={weatherData} />
 
-        <Movie movies={movies} />
+        <Movies movies={movies} />
 
       </header>
     </div>
