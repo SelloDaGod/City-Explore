@@ -26,7 +26,7 @@ function App() {
       setError(error.message)
     })
     console.log(response)
-    let moviesResponse = axios.get(`${process.env.REACT_APP_CITYEXPLORERAPI}/movies?movie=Memphis`)
+    let moviesResponse = axios.get(`${process.env.REACT_APP_CITYEXPLORERAPI}/movies?movie=`+ enteredText)
     moviesResponse.then(function (res) {
       console.log(res.data)
       setMovies(res.data)
